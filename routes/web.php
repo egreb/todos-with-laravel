@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\TodoController as ApiTodoController;
 use App\Http\Controllers\TodoController;
 use App\Models\Todo;
 use Illuminate\Support\Facades\Route;
@@ -20,5 +21,13 @@ Route::delete('/todo/delete/{id}', [TodoController::class, 'delete'])
 Route::patch('/todo/{id}/complete', [TodoController::class, 'complete'])
     ->middleware('auth')
     ->name('todo.complete');
+
+Route::prefix("api")->group(function () {
+    Route::get('todo', [ApiTodoController::class, 'index'])
+        ->middleware('auth')
+        ->name('todo');
+
+    Route::post('todo/store', [ApiTodoController::class, 'store']);
+});
 
 require __DIR__ . '/auth.php';
